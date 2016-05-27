@@ -1,0 +1,19 @@
+# coding: utf-8
+
+INSTANCES_PROMOTED_NUM = 100
+PATTERNS_PROMOTED_NUM = 5
+CATEGORY_BASEDIR = '../data/category/'
+CORPUS_FILENAME = '../corpora/category/不处理数字+sameclass/candidate.count'
+
+SAMECLASS_FILENAME = '../corpora/category/不处理数字+sameclass/sameclasses.txt'
+SAMECLASS_LOWER_BOUND = 3.0 / 4
+
+PATTERN_PRECISION_LOWER_BOUND = 0.5
+CANDIDATE_LOWER_BOUND = 2
+CANDIDATE_WEIGHT = 1
+EXCLUSIVE_WEIGHT = -5
+
+
+STATUS_DESC = ['STOP', 'RUNNING']
+STATUS_STOP = 0
+STATUS_RUNNING = 1

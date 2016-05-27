@@ -1,0 +1,69 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title></title>
+	</head>
+	<body>
+		Category name:（不含空格）<br>
+		<input type="text" id="category"><br>
+		Seed Instances:（一个instance占一行，至少输入10个，不含空格）<br>
+		<textarea id="seeds" cols="30" rows="30"></textarea> <br>
+		Exclusive Categories:（必须是已经存在的category名字，一个占一行）<br>
+		<textarea id="exclusion" cols="30" rows="10"></textarea><br>
+
+		<input type="button" value="submit" onclick="submit()">
+	</body>
+	{% load static %}
+	<script src={% static "jquery.min.js" %}></script>
+	<script type="text/javascript">
+		exist = [];
+		{% for category in exist %}
+			exist.push("{{ category }}");
+		{% endfor %}
+
+		process = function(arr) {
+			return $.grep($.map(arr, function(str){return $.trim(str);}), function(str){return str!=='';});
+		}
+
+		submit = function() {
+			name = $('#category').val();
+			if(name==='' || name.indexOf(' ')!==-1) {
+				alert('输入正确的Category name');
+				return;
+			} else if($.inArray(name, exist)!==-1) {
+				alert('Category已经存在！');
+				return;
+			}
+			seeds = process($('#seeds').val().split('\n'));
+			if(seeds.length < 10) {
+				alert('Seed Instance至少输入10个！');
+				return;
+			}
+			exclusions = process($('#exclusion').val().split('\n'));
+			$.each(exclusions, function(i, str) {
+				if($.inArray(str, exist)===-1) {
+					alert('只能输入已经存在的category，包括:' + exist);
+					return;
+				}
+			});
+
+			$.ajax( {    
+				url: "/category/add_new", //前面有 / 表示绝对 url，没有 / 则表示相对当前页面的 url
+				data:{
+					name: name,
+					seeds : seeds.join(' '),
+					exclusions : exclusions.join(' '),
+				},    
+				type:'get',  
+				success: function(data) {    
+					alert("添加成功！");    
+					window.location.href = '/category';
+				},
+				 error: function(data){
+				    alert("操作失败！ ");
+				    // window.location.reload();
+				},
+			});
+		}
+	</script>
+</html>

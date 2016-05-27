@@ -1,0 +1,60 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title></title>
+	</head>
+	<body>
+		Relation name:（不含空格）<br>
+		<input type="text" id="relation"><br>
+		Seed Instances:（一个instance占一行，至少输入10个，不含空格）<br>
+		<textarea id="seeds" cols="30" rows="30"></textarea> <br>
+
+		<input type="button" value="submit" onclick="submit()">
+	</body>
+	{% load static %}
+	<script src={% static "jquery.min.js" %}></script>
+	<script type="text/javascript">
+		exist = [];
+		{% for relation in exist %}
+			exist.push("{{ relation }}");
+		{% endfor %}
+
+		process = function(arr) {
+			return $.grep($.map(arr, function(str){return $.trim(str);}), function(str){return str!=='';});
+		}
+
+		submit = function() {
+			name = $('#relation').val();
+			if(name==='' || name.indexOf(' ')!==-1) {
+				alert('输入正确的Relation name');
+				return;
+			} else if($.inArray(name, exist)!==-1) {
+				alert('Relation已经存在！');
+				return;
+			}
+			seeds = process($('#seeds').val().split('\n'));
+			if(seeds.length < 10) {
+				alert('Seed Instance至少输入10个！');
+				return;
+			}
+			});
+
+			$.ajax( {    
+				url: "/relation/add_new", //前面有 / 表示绝对 url，没有 / 则表示相对当前页面的 url
+				data:{
+					name: name,
+					seeds : seeds.join(' '),
+				},    
+				type:'get',  
+				success: function(data) {    
+					alert("添加成功！");    
+					window.location.href = '/relation';
+				},
+				 error: function(data){
+				    alert("操作失败！ ");
+				    // window.location.reload();
+				},
+			});
+		}
+	</script>
+</html>

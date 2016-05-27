@@ -1,0 +1,51 @@
+<html>
+	<body>
+		<ul>
+			{% for iter in iterations %}
+				<li><a href="/category/{{ category }}/{{ iter }}/">{{ iter }}</a></li>
+			{% endfor %}
+		</ul>
+		<input type="button" id="remove" value="REMOVE newest" onclick="remove_newest()"><br>
+		iternum
+		<input type="text" id="iternum" value="1"><br>
+		<input type="button" id="start" value="START new iteration!" onclick="startcpl()">
+	</body>
+	{% load static %}
+	<script src={% static "jquery.min.js" %}></script>
+	<script type="text/javascript">
+		remove_newest = function() {
+			$.ajax( {    
+				url: "remove_newest",
+				type:'get',
+				success: function(data) {    
+					alert("Success to remove the newest iteration!");
+					window.location.reload();
+				},
+				 error: function(data){
+				    alert("Failed");
+				},
+			});
+		}
+
+		startcpl = function(){
+			i = document.getElementById("iternum").value;
+			if(i<1 || i>20){
+				alert("1<=iternum<=20");
+				return;
+			}
+			$.ajax( {    
+				url: "startcpl",  
+				data:{
+					iternum : i,
+				},    
+				type:'get',
+				success: function(data) {    
+					alert("Success to start new CPL iteration!");
+				},
+				 error: function(data){
+				    alert("Fail to start new CPL! Maybe it has been running already.");
+				},
+			});
+		}
+	</script>
+</html>

@@ -1,0 +1,10 @@
+<html>
+	<body>
+		<ul>
+			{% for relation in all_relation %}
+				<li><a href="/relation/{{ relation }}/">{{ relation }}</a></li>
+			{% endfor %}
+		</ul>
+		<input type="button" value="ADD new Relation" onclick="window.location.href='add_new_html'">
+	</body>
+</html>

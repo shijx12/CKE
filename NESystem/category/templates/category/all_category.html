@@ -1,0 +1,10 @@
+<html>
+	<body>
+		<ul>
+			{% for category in all_category %}
+				<li><a href="/category/{{ category }}/">{{ category }}</a></li>
+			{% endfor %}
+		</ul>
+		<input type="button" value="ADD new Category" onclick="window.location.href='add_new_html'">
+	</body>
+</html>

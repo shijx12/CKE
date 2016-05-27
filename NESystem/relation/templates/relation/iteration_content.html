@@ -1,0 +1,114 @@
+
+<html>
+	<body>
+		<h2>instances</h2>
+		<table style="border:solid">
+			<thead>
+				<th>id</th>
+				<th>content</th>
+				<th>probability</th>
+			</thead>
+			<tbody>
+			<!-- {% if can_update %}
+				{% for i, inst in instances.items %}
+					<tr>
+						<td>{{ i }}</td>
+						<td>{{ inst.content }}</td>
+						<td><input type="text" id="inst_p{{ i }}" value={{ inst.p }}></td>
+						<td><input type="button" value="update" onclick="update('i', {{ i }})"></td>
+						<input type="hidden" id="inst_oldp{{ i }}" value={{ inst.p }}>
+					</tr>
+				{% endfor %}
+				{% else %}
+				{% for i, inst in instances.items %}
+					<tr>
+						<td>{{ i }}</td>
+						<td>{{ inst.content }}</td>
+						<td>{{ inst.p }}</td>
+					</tr>
+				{% endfor %}
+			{% endif %} -->
+			{% for instance in instances %}
+				<tr>
+					<td></td>
+					<td>{{ instance }}</td>
+					<td></td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+		<h2>patterns</h2>
+		<table style="border:solid">
+			<thead>
+				<th>id</th>
+				<th>content</th>
+				<th>probability</th>
+			</thead>
+			<tbody>
+			<!-- {% if can_update %}
+				{% for i, patt in patterns.items %}
+					<tr>
+						<td>{{ i }}</td>
+						<td>{{ patt.content }}</td>
+						<td><input type="text" id="patt_p{{ i }}" value={{ patt.p }}></td>
+						<td><input type="button" value="update" onclick="update('p', {{ i }})"></td>
+						<input type="hidden" id="patt_oldp{{ i }}" value={{ patt.p }}>
+					</tr>
+				{% endfor %}
+				{% else %}
+				{% for i, patt in patterns.items %}
+					<tr>
+						<td>{{ i }}</td>
+						<td>{{ patt.content }}</td>
+						<td>{{ patt.p }}</td>
+					</tr>
+				{% endfor %}
+			{% endif %} -->
+			{% for pattern in patterns %}
+				<tr>
+					<td></td>
+					<td>{{ pattern }}</td>
+					<td></td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	</body>
+	{% load static %}
+	<script src={% static "jquery.min.js" %}></script>
+	<script type="text/javascript">
+		update = function(tp, i) {
+			if(tp == 'i') pre = 'inst';
+			else if(tp == 'p') pre = 'patt';
+			else return;
+			newp = document.getElementById(pre+"_p" + i).value;
+			oldp = document.getElementById(pre+"_oldp" + i).value;
+			if(newp > 1.0 || newp < 0){
+				alert("0<=p<=1");
+				return;
+			}
+			if(newp != oldp){
+				delta = newp - oldp;
+				$.ajax( {    
+					url: "update_p",  
+					data:{
+						tp: tp,
+						i : i,
+						delta : delta,
+					},    
+					type:'get',    
+					cache: false,    
+					success: function(data) {    
+						alert("修改成功！");    
+						window.location.reload();
+					},
+					 error: function(data){
+					    alert("failed ");
+					    window.location.reload();
+					},
+				});
+
+			}
+		}
+	</script>
+</html>
