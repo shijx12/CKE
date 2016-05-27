@@ -1,1 +1,1 @@
-# CNE(Chinese Knowledge Extraction)
+# CKE(Chinese Knowledge Extraction)
